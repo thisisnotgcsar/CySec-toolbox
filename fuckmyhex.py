@@ -53,7 +53,8 @@ def bytes_add(output):
 
     for i in range(0, len(output) - 1, 2):
         if i + 1 < len(output):
-            result.append(output[i] + output[i+1])
+            result_int = int.from_bytes(output[i], byteorder="little") + int.from_bytes(output[i+1], byteorder="little")
+            result.append(result_int.to_bytes((result_int.bit_length() + 7) // 8, byteorder="little"))
 
     # If there's an odd number of bytes, append the last one as is 
     if len(output) % 2 == 1:
