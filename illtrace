@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -n "$1" -a -e "$1" ]; then
+	origin="$1"
+	dest="$1.mod"
+else
+	echo "origin file not found"
+	exit -1
+fi
+
+xxd -ps "$origin" | sed s/
+
