@@ -61,14 +61,28 @@ def bytes_add(output):
         result.append(output[-1])
     return result
 
+#expect bytes
+def bytes_mul(output):
+    result = []
+
+    for i in range(0, len(output) - 1, 2):
+        if i + 1 < len(output):
+            result_int = int.from_bytes(output[i], byteorder="little") * int.from_bytes(output[i+1], byteorder="little")
+            result.append(result_int.to_bytes((result_int.bit_length() + 7) // 8, byteorder="little"))
+
+    # If there's an odd number of bytes, append the last one as is 
+    if len(output) % 2 == 1:
+        result.append(output[-1])
+    return result
+
 
 # parsing args
 parser = argparse.ArgumentParser(description='Hex tool for various ops')
 parser.add_argument('-f', '--file', type=argparse.FileType('rb'), default=sys.stdin, help="specify a file path to read from input. stdin is default if not provided")
-parser.add_argument('ops', nargs='*', default=[], help='Do operations with bytes or hex provided. Operations: (h): hex mode, (b) bytes mode, (r): revert bytes line by line, (x) xor byte lines two by two, (a) add operations of lines two by two')
+parser.add_argument('ops', nargs='*', default=[], help='Do operations with bytes or hex provided. Operations: (h): hex mode, (b) bytes mode, (r): revert bytes line by line, (x) xor byte lines two by two, (a) arithmetic addition of lines two by two [lITTLE ENDIAN], (m) arithmetic multiplication of lines two by two [lITTLE ENDIAN]')
 args = parser.parse_args()
 file = args.file
-valid_ops = ['r', 'h', 'b', 'x', 'a']
+valid_ops = ['r', 'h', 'b', 'x', 'a', 'm']
 ops = list(itertools.chain.from_iterable(args.ops))
 for op in ops:
     if op not in valid_ops:
@@ -100,6 +114,10 @@ for op in ops:
     # add
     if op == 'a':
         output = bytes_add(output)
+
+    # mul
+    if op == 'm':
+        output = bytes_mul(output)
 
 # always print modified file
 if not byte_mode:
