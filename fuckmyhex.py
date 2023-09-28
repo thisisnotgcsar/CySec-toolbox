@@ -39,8 +39,21 @@ def bytes_xor(output):
             if len(output[i]) != len(output[i + 1]):
                 print(f"fuckmyhex.py: error: xor: bytes of different length:\n{i}: {output[i]} is {len(output[i])} bytes\n{i+1}: {output[i+1]} is {len(output[i+1])} byts") 
                 exit(-1)
-            xored_byte = bytes(a ^ b for a, b in zip(output[i], output[i + 1]))
+            xored_bytes = bytes(a ^ b for a, b in zip(output[i], output[i + 1]))
             result.append(xored_byte)
+
+    # If there's an odd number of bytes, append the last one as is 
+    if len(output) % 2 == 1:
+        result.append(output[-1])
+    return result
+
+#expect bytes
+def bytes_add(output):
+    result = []
+
+    for i in range(0, len(output) - 1, 2):
+        if i + 1 < len(output):
+            result.append(output[i] + output[i+1])
 
     # If there's an odd number of bytes, append the last one as is 
     if len(output) % 2 == 1:
@@ -51,10 +64,10 @@ def bytes_xor(output):
 # parsing args
 parser = argparse.ArgumentParser(description='Hex tool for various ops')
 parser.add_argument('-f', '--file', type=argparse.FileType('rb'), default=sys.stdin, help="specify a file path to read from input. stdin is default if not provided")
-parser.add_argument('ops', nargs='*', default=[], help='Do operations with bytes or hex provided. Operations: (h): hex mode, (b) bytes mode, (r): revert bytes line by line, (x) xor byte lines two by two')
+parser.add_argument('ops', nargs='*', default=[], help='Do operations with bytes or hex provided. Operations: (h): hex mode, (b) bytes mode, (r): revert bytes line by line, (x) xor byte lines two by two, (a) add operations of lines two by two')
 args = parser.parse_args()
 file = args.file
-valid_ops = ['r', 'h', 'b', 'x']
+valid_ops = ['r', 'h', 'b', 'x', 'a']
 ops = list(itertools.chain.from_iterable(args.ops))
 for op in ops:
     if op not in valid_ops:
@@ -79,9 +92,13 @@ for op in ops:
     if op == 'r':
         output = bytes_reverse(output)
    
-   # xor
+    # xor
     if op == 'x':
         output = bytes_xor(output)
+
+    # add
+    if op == 'a':
+        output = bytes_add(output)
 
 # always print modified file
 if not byte_mode:
