@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# awk filter to cut the bytecodes from objdump output
+awk_filter='{ 
+	for (i=2; i<=NF; i++) {
+		if ($i ~ /^[0-9a-f]{2}$/) {
+			printf "%s", $i
+		}
+	}
+}
+END { printf "\n" }'
+
+# Define a function to display the usage/help message
+display_help() {
+	echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
+	echo "Options:"
+	echo "  -h, --help		Display this help message"
+	echo "  -b, --backslash_x	Bytes will be prepended with '\x'"
+}
+
+file=""
+bx=false
+
+#parsing options and arguments
+while getopts ":hb" opt; do
+	case "$opt" in
+		h | help)
+			display_help
+			exit 0
+			;;
+		b | backslash_x)
+			bx=true
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			display_help
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND-1))
+
+
+#read from file if provided otherwise read from stdin
+if [ $# -eq 0 ]; then
+	file="/dev/stdin"
+elif [ -n "$1" -a -e "$1" ]; then 
+	file="$1"
+else	
+	echo "assembly file not found"
+	exit 1
+fi
+
+asm=$(cat "$file")
+
+asm_completed="section .text
+global _start
+_start:
+${asm}"
+
+echo "$asm_completed" > a.temp
+nasm -f elf64 -g -F dwarf -o a.temp.o a.temp
+rm a.temp
+filtered=$(objdump --disassemble=_start -M intel a.temp.o | awk "$awk_filter")
+filtered_slashx=$(echo "$filtered" | sed 's/../\\x&/g')
+rm a.temp.o
+
+if [ "$bx" = true ]; then
+	echo -n "$filtered_slashx"
+else
+	echo -n "$filtered"
+fi

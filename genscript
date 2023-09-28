@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cat > ./script.py << EOM
+from pwn import *
+
+#with open("/home/superuser/challenges/tools/shellcodes/normal.sc") as f:
+#   shellcode = bytes.fromhex(f.readline().strip('\n'))
+#print(shellcode.hex())
+
+context.terminal = ['tmux', 'splitw', '-h']
+
+if args["REMOTE"]:
+    r = remote("$1", $2)
+else:
+    r = process("./$3")
+    gdb.attach(r, """
+    # b *0x40000 break after the read
+    c
+    """)
+
+input("wait")
+r.interactive()
+EOM
