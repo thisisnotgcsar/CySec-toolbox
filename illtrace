@@ -2,11 +2,35 @@
 
 if [ -n "$1" -a -e "$1" ]; then
 	origin="$1"
-	dest="$1.mod"
+	desthex="$1.hex"
+	destmod="$1.mod"
 else
 	echo "origin file not found"
 	exit -1
 fi
 
-xxd -ps "$origin" | sed s/
+start_s="b900000000ba01000000be00000000bf00000000b800000000"
+end_s="4883f8ff"
+origin_s=$(xxd -ps "$origin" | tr -d '\n')
 
+
+rest1=${origin_s#*$start_s}
+start_index=$(( ${#origin_s} - ${#rest1} ))
+rest2=${origin_s#*$end_s}
+end_index=$(( ${#origin_s} - ${#rest2} - ${#end_s} ))
+echo "incipit found at index $start_index"
+echo "prolog found at index $end_index"
+if [ "$start_index" -le 0 -a "$end_index" -le "$start_index" ]; then
+	echo "aborting"
+	exit -1
+fi
+replace_count=$(( (end_index - start_index) / 2 ))
+replace_s=$(printf '90%.0s' $(seq 1 "$replace_count"))
+
+origin_mod="${origin_s:0:start_index}$replace_s${origin_s:end_index}"
+
+echo -n "$origin_mod" > "$desthex"
+xxd -r "$desthex" > "$destmod"
+rm "$desthex"
+chmod +x "$destmod"
+file "$destmod"
