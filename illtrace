@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# illtrace
+# search in an executable file a call for ptrace and NOPs it
+# it is assumed there is only one call to it, subsequent ones won't be found
+#
+# superuser
+
+# verbose mode
+if [ -n "$1" ] && [ "-v" = "$1" -o "--verbose" = "$1" ]; then
+	verbose=1
+	shift
+else
+	verbose=0
+fi
+
+# argument checking
 if [ -n "$1" -a -e "$1" ]; then
 	origin="$1"
 	desthex="$1.hex"
@@ -9,28 +24,42 @@ else
 	exit -1
 fi
 
+# start and end assembly ptrace fingerprints
 start_s="b900000000ba01000000be00000000bf00000000b800000000"
 end_s="4883f8ff"
-origin_s=$(xxd -ps "$origin" | tr -d '\n')
 
+# transform the exe into an hex string
+origin_s=$(xxd -p "$origin" | tr -d '\n')
 
+# try to find if it contains the fingerprints
+# and take their indeces
 rest1=${origin_s#*$start_s}
 start_index=$(( ${#origin_s} - ${#rest1} ))
 rest2=${origin_s#*$end_s}
 end_index=$(( ${#origin_s} - ${#rest2} - ${#end_s} ))
-echo "incipit found at index $start_index"
-echo "prolog found at index $end_index"
+
+if [ "$verbose" -eq 1 ]; then
+	echo "incipit found at index $start_index"
+	echo "prolog found at index $end_index"
+fi
+# check if indeces found and are somewhat correct
 if [ "$start_index" -le 0 -a "$end_index" -le "$start_index" ]; then
 	echo "aborting"
 	exit -1
 fi
+
+# count how many NOPs to insert in place of the call and build them
 replace_count=$(( (end_index - start_index) / 2 ))
 replace_s=$(printf '90%.0s' $(seq 1 "$replace_count"))
 
+# modified version of the hex of the exe
 origin_mod="${origin_s:0:start_index}$replace_s${origin_s:end_index}"
 
-echo -n "$origin_mod" > "$desthex"
-xxd -r "$desthex" > "$destmod"
-rm "$desthex"
+if [ "$verbose" -eq 1 ]; then
+	echo -n "$origin_mod" > "$desthex"
+	echo "create modified hex dump in $desthex"
+fi
+
+# recreating the exe from the modified version
+echo -n "$origin_mod" | xxd -r -p  > "$destmod"
 chmod +x "$destmod"
-file "$destmod"
