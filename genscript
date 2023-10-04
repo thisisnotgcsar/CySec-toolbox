@@ -2,22 +2,35 @@
 
 cat > ./script.py << EOM
 from pwn import *
-
-#with open("/home/superuser/challenges/tools/shellcodes/normal.sc") as f:
-#   shellcode = bytes.fromhex(f.readline().strip('\n'))
-#print(shellcode.hex())
+import time
+import subprocess
+import sys
 
 context.terminal = ['tmux', 'splitw', '-h']
 
 if args["REMOTE"]:
-    r = remote("$1", $2)
+	r = remote("$1", $2)
 else:
-    r = process("./$3")
-    gdb.attach(r, """
-    # b *0x40000 break after the read
-    c
-    """)
+	r = process("./$3")
+	gdb.attach(r, """
+	# b *0x40000
+	unset env
+	c
+	""")
 
 input("wait")
+time.sleep(0.5)
+
+"""
+bin_shellcode = b""
+command = "genbin ~/challenges/tools/shellcodes/normal.asm"
+try:
+	bin_shellcode = bytes.fromhex(subprocess.check_output(command, shell=True, universal_newlines=True))
+except (subprocess.CalledProcessError, ValueError) as e:
+	print(f"An exception occurred: {e}")
+	exit(-1)
+r.send(bin_shellcode)
+"""
+
 r.interactive()
 EOM
