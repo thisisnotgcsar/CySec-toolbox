@@ -11,14 +11,21 @@ for r in range(1, len(characters) + 1):
 ops = [''.join(permutation) for permutation in permutations]
 '''
 
+# right now the program assumes that the input is uniform in the convention
+# e.g.: all lines are bytes or all lines are hex
+
 byte_mode=True
 
 # functions operations
+# detects and clear \x prepends before hex bytes if they are present
+def clean_hex(output):
+    return [line.replace("\\x", "") for line in output]
+
 def tobytes(output):
     global byte_mode
     try:
         byte_mode=False
-        return [bytes.fromhex(hex_str) for hex_str in output]
+        return [bytes.fromhex(hex_str) for hex_str in clean_hex(output)]
     except:
         byte_mode=True
         return [line.strip().encode() for line in output]
@@ -78,7 +85,7 @@ def bytes_mul(output):
 
 # parsing args
 parser = argparse.ArgumentParser(description='Hex tool for various ops')
-parser.add_argument('-f', '--file', type=argparse.FileType('rb'), default=sys.stdin, help="specify a file path to read from input. stdin is default if not provided")
+parser.add_argument('-f', '--file', type=argparse.FileType('r'), default=sys.stdin, help="specify a file path to read from input. stdin is default if not provided")
 parser.add_argument('ops', nargs='*', default=[], help='Do operations with bytes or hex provided. Operations: (h): hex mode, (b) bytes mode, (r): revert bytes line by line, (x) xor byte lines two by two, (a) arithmetic addition of lines two by two [lITTLE ENDIAN], (m) arithmetic multiplication of lines two by two [lITTLE ENDIAN]')
 args = parser.parse_args()
 file = args.file
