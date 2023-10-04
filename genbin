@@ -15,30 +15,35 @@ display_help() {
 	echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
 	echo "Options:"
 	echo "  -h, --help		Display this help message"
-	echo "  -b, --backslash_x	Bytes will be prepended with '\x'"
+	echo "  -bx, --backslash_x	Bytes will be prepended with '\x'"
+	echo "  -nb, --nbytes		Prints the total number of bytes of the binary"
 }
 
 file=""
 bx=false
+nb=false
 
-#parsing options and arguments
-while getopts ":hb" opt; do
-	case "$opt" in
-		h | help)
+# Parsing options and arguments
+while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
+	case "$1" in
+		-h | --help)
 			display_help
 			exit 0
 			;;
-		b | backslash_x)
+		-bx | --backslash_x)
 			bx=true
 			;;
-		\?)
-			echo "Invalid option: -$OPTARG" >&2
+		-nb | --nbytes)
+			nb=true
+			;;
+		*)
+			echo "Invalid option: $1" >&2
 			display_help
 			exit 1
 			;;
 	esac
+	shift
 done
-shift $((OPTIND-1))
 
 
 #read from file if provided otherwise read from stdin
@@ -63,10 +68,14 @@ nasm -f elf64 -g -F dwarf -o a.temp.o a.temp
 rm a.temp
 filtered=$(objdump --disassemble=_start -M intel a.temp.o | awk "$awk_filter")
 filtered_slashx=$(echo "$filtered" | sed 's/../\\x&/g')
+total_bytes=$((${#filtered} / 2))
 rm a.temp.o
 
 if [ "$bx" = true ]; then
 	echo -n "$filtered_slashx"
 else
 	echo -n "$filtered"
+fi
+if [ "$nb" = true ]; then
+	echo -e "\n$total_bytes"
 fi
