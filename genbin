@@ -2,7 +2,7 @@
 
 # awk filter to cut the bytecodes from objdump output
 awk_filter='{ 
-	for (i=2; i<=NF; i++) {
+	for (i=1; i<=NF; i++) {
 		if ($i ~ /^[0-9a-f]{2}$/) {
 			printf "%s", $i
 		}
@@ -66,7 +66,7 @@ ${asm}"
 echo "$asm_completed" > a.temp
 nasm -f elf64 -g -F dwarf -o a.temp.o a.temp
 rm a.temp
-filtered=$(objdump --disassemble=_start -M intel a.temp.o | awk "$awk_filter")
+filtered=$(objdump -d --no-addresses -M intel a.temp.o | awk "$awk_filter")
 filtered_slashx=$(echo "$filtered" | sed 's/../\\x&/g')
 total_bytes=$((${#filtered} / 2))
 rm a.temp.o
