@@ -6,7 +6,12 @@ import time
 import subprocess
 import sys
 
+def print_red(str):
+	print("\033[91m" + str + "\033[0m")
+
 context.terminal = ['tmux', 'splitw', '-h']
+#context.log_level = "error"
+
 
 if args["REMOTE"]:
 	r = remote("$1", $2)
