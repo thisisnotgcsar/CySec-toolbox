@@ -23,7 +23,7 @@ time.sleep(0.5)
 
 """
 bin_shellcode = b""
-command = "genbin ~/challenges/tools/shellcodes/normal.asm"
+command = "genbin ~/challenges/playroom/shellcodes/normal.asm"
 try:
 	bin_shellcode = bytes.fromhex(subprocess.check_output(command, shell=True, universal_newlines=True))
 except (subprocess.CalledProcessError, ValueError) as e:
