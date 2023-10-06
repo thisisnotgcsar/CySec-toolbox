@@ -17,8 +17,8 @@ xor    rax,rax
 pop    rsi
 mov    rdx,0x100
 syscall		;read
-mov    rax,0x1
-mov    rdi,0x00	;output fd
+mov    rax,0x01
+mov    rdi,0x01	;output fd
 pop    rsi
 mov    rdx,0x30
 syscall		;write
