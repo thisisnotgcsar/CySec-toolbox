@@ -1,0 +1,6 @@
+vim
+gcc
+gdb
+pwndbg
+ghidra
+
