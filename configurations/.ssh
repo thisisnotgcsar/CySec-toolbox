@@ -1,0 +1,6 @@
+copy paste ~/.ssh
+add ssh key to key-agent:
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+test connection:
+ssh -T git@github.com
