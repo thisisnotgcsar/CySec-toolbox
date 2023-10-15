@@ -28,6 +28,7 @@ else:
 	gdb.attach(r, """
 	# b *0x40000
 	unset env
+	set disable-randomization off
 	c
 	""")
 
