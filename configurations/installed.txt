@@ -6,3 +6,4 @@ ghidra
 JRE sudo apt install default-jre, java -version, sudo update-alternatives --config java, adding java path to /etc/environment
 xclip
 patchelf
+one_gadget
