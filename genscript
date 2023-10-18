@@ -4,7 +4,7 @@ cat > ./script.py << EOM
 from pwn import *
 import time
 import subprocess
-import sys
+from functools import reduce
 
 def print_red(str):
 	print("\033[91m" + str + "\033[0m")
@@ -17,16 +17,25 @@ def genbin(binary_name):
 		print(f"An exception occurred: {e}")
 		exit(-1)
 
+def rop_chain(chain):     
+    for i in range(len(chain)):
+        chain[i] = p64(chain[i])
+    return reduce(lambda x, y: x + y, chain)
+
+
 context.terminal = ['tmux', 'splitw', '-h']
 #context.log_level = "error"
+
+# breakpoints
+b_main = 0xffff
 
 
 if args["REMOTE"]:
 	r = remote("$1", $2)
 else:
 	r = process("./$3")
-	gdb.attach(r, """
-	# b *0x40000
+	gdb.attach(r, f"""
+	# b *{b_main}
 	unset env
 	set disable-randomization off
 	c
