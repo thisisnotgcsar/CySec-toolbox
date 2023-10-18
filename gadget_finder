@@ -1,1 +1,64 @@
-cat gadgets | grep -E '^0x[0-9a-f]+ : pop.*(rdi|rsi|rdx).*ret'
+#!/bin/bash
+
+# bash file for gadgets finding optimization
+# it runs ROPgadget and puts the output to gadgets file
+# it then parses gadgets with different awk filters and prints the outputs to stdout
+# current filters are:
+# 	- all lines that have only pop operations
+# 	- all lines that contain a mov rsp, *** operation
+
+
+if [ -n "$1" ] && [ "-h" = "$1" -o "--help" = "$1" ]; then
+	echo -e "script for gadgets finding optimization"
+	echo "it runs ROPgadget and puts the output to a gadgets file"
+	echo "it then parses gadgets with different awk filters and prints the outputs to stdout"
+	echo "current filters are:"
+	echo "      - all lines that have only pop operations"
+	echo "      - all lines that contain a mov rsp, *** operation"
+	echo "you can use grep on its output to filter it even more"
+	echo ""
+	echo "usage: gadget_finder [options] FILE"
+	echo "options are:"
+	echo "-h, --help	display this help message"
+	exit 0
+ 
+fi
+
+if [ ! -n "$1" -o ! -e "$1" ]; then
+	echo "file not found"
+	exit -1
+fi
+
+ROPgadget --binary "$1" > gadgets
+
+# all lines that fnish with ret or syscall
+#awk 'NF == 3 && ($3 ~ /ret$|syscall$/)' gadgets
+
+# all lines that have only one pop
+#awk 'NF == 6 && ($3 ~ /pop/) && ($NF ~ /ret$|syscall$/)' gadgets 
+
+
+awk '{
+#awk filter for all lines of gadgets file
+# check if the string ends with ret or syscal
+if ($NF ~ /(ret|syscall)$/){
+	
+	# all lines that just have a ret or syscall
+	if($3 == "ret" || $3 == "syscall")
+		print;
+	
+	# all lines that starts with mov rsp, *** 
+	else if($3 == "mov" && $4 = "rsp")
+		print;
+	
+	# all lines that only have pops
+	else if($3 == "pop"){
+		flag = 1
+		for(i=3; i < NF; i+=3)
+			if($i != "pop")
+				flag = 0;
+		if(flag == 1)
+			print;
+	}
+}
+}' gadgets
