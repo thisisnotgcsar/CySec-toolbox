@@ -7,4 +7,3 @@ JRE sudo apt install default-jre, java -version, sudo update-alternatives --conf
 xclip
 patchelf
 one_gadget
-git-filter-repo
