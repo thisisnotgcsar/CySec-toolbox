@@ -1,14 +1,11 @@
 #!/bin/bash
 
 # awk filter to cut the bytecodes from objdump output
-awk_filter='{ 
-	for (i=1; i<=NF; i++) {
-		if ($i ~ /^[0-9a-f]{2}$/) {
+awk_filter='{
+	for(i=1; i <=7; i++)
+		if($i ~ /^[0-9a-f]+$/)
 			printf "%s", $i
-		}
-	}
-}
-END { printf "\n" }'
+}'
 
 # Define a function to display the usage/help message
 display_help() {
@@ -65,17 +62,26 @@ ${asm}"
 
 echo "$asm_completed" > a.temp
 nasm -f elf64 -g -F dwarf -o a.temp.o a.temp
-rm a.temp
-filtered=$(objdump -d --no-addresses -M intel a.temp.o | awk "$awk_filter")
+#objdump -d --no-addresses -M intel a.temp.o > a.temp.dump 
+#awk "$awk_filter" a.temp.dump > a.temp.filtered
+objcopy -O binary a.temp.o a.temp.o2
+od -An -v -t x1 a.temp.o2 | tr -d ' \n' > a.temp.filtered
+filtered=$(cat a.temp.filtered)
 filtered_slashx=$(echo "$filtered" | sed 's/../\\x&/g')
 total_bytes=$((${#filtered} / 2))
-rm a.temp.o
 
 if [ "$bx" = true ]; then
-	echo -n "$filtered_slashx"
+	echo "$filtered_slashx"
 else
-	echo -n "$filtered"
+	echo "$filtered"
 fi
 if [ "$nb" = true ]; then
-	echo -e "\n$total_bytes"
+	echo "$total_bytes"
 fi
+
+
+rm a.temp
+rm a.temp.o
+#rm a.temp.dump
+rm a.temp.o2
+rm a.temp.filtered
