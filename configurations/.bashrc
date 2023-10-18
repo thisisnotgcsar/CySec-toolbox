@@ -120,4 +120,5 @@ fi
 PATH=/home/superuser/challenges/playroom:$PATH
 PS1="\W\$ "
 alias ccb="xclip -sel c < "
+alias cd_playroom="cd ~/challenges/playroom/"
 [ -z "$TMUX" ] && cd ~/challenges/ODC && exec tmux 
