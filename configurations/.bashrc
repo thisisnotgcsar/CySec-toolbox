@@ -116,10 +116,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
-PATH=/home/superuser/challenges/playroom:$PATH
-PS1="\W\$ "
 source /etc/environment
+PS1="\W\$ "
+PATH=/home/superuser/challenges/playroom:$PATH
 alias ccb="xclip -sel c < "
 alias cd_playroom="cd ~/challenges/playroom/"
 alias cd_odc="cd ~/challenges/ODC/"
