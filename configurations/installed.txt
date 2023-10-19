@@ -15,3 +15,4 @@ java -version
 sudo vim /etc/environment and append this line JAVA_HOME="/usr/lib/jvm/java-19-openjdk-amd64"
 source /etc/environment
 java -version
+ln -s ~/challenges/ghidra-dir/ghidraRun ~/challenges/playroom/ghidra
