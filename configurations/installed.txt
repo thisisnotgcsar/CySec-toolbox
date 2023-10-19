@@ -3,9 +3,15 @@ gcc
 gdb
 pwndbg
 ghidra
-JRE sudo apt install default-jre, java -version, sudo update-alternatives --config java, adding java path to /etc/environment
 xclip
 patchelf
 one_gadget
 nasm
 ROPgadget
+for java: https://phoenixnap.com/kb/install-java-ubuntu
+sudo apt install openjdk-19-jdk #put in the number the version that you want, rn available on apt the latest is the 19
+sudo update-alternatives --config java
+java -version
+sudo vim /etc/environment and append this line JAVA_HOME="/usr/lib/jvm/java-19-openjdk-amd64"
+source /etc/environment
+java -version
