@@ -119,6 +119,7 @@ fi
 
 PATH=/home/superuser/challenges/playroom:$PATH
 PS1="\W\$ "
+source /etc/environment
 alias ccb="xclip -sel c < "
 alias cd_playroom="cd ~/challenges/playroom/"
 alias cd_odc="cd ~/challenges/ODC/"
