@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# shell script that given a file in input searches all the one_gadgets inside it and then
+# calls the python script you provided in input with as argument each one_gadgets offsetts he found
+
+display_help() {
+        echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
+        echo "Options:"
+        echo "  -h, --help		Display this help message"
+        echo "  -s, --script		python script file script file to be called with provided arg. DEFAULT: 'script.py'"
+        echo "  -l, --log		appends the output of one_gadget into the file one_gadgets. DEFUALT: false"
+}
+
+
+script_file="./script.py"
+log=false
+onegadget_out_file="./one_gadgets"
+input_file=""
+
+if [ "$#" -le 0 ]; then
+	echo "too few arguments!"
+	display_help
+	exit -1
+fi	
+
+# Parsing options
+while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
+	case "$1" in
+                -h | --help)
+                        display_help
+                        exit 0
+                        ;;
+                -s | --script)
+			if [ ! -n "$2" -o ! -e "$2" ]; then
+				echo "script file not found"
+				exit -1
+			else
+				script_file="$2"
+			fi
+                        ;;
+                -l | --log)
+                        log=true
+                        ;;
+                *)
+                        echo "Invalid option: $1" >&2
+                        display_help
+                        exit -1
+                        ;;
+        esac
+        shift
+done
+
+if [ ! -n "$1" -o ! -e "$1" ]; then
+	echo "input file not found"
+	exit -1
+else
+	input_file="$1"
+fi
+
+one_gadget_output=$(one_gadget "$input_file")
+#check if everything went good otherwise display error
+if [ ! $? -eq 0 ]; then
+	echo "$one_gadget_output"
+	exit -1
+fi
+
+#outputting command to onegadgets_out_file if logging was set to true in cmd line arguments
+if $log; then
+	echo "$one_gadget_output" > "$onegadget_out_file"
+fi
+
+
+#filtering one_gadget output and getting only the offsets of the one_gadgets
+one_gadgets=$(echo "$one_gadget_output" | awk '{
+	#awk filter for one_gadgte typical output
+	# print first column of all lines in which first coulmn is an hex number
+	if($1 ~ /^0x[a-z1-9A-F]+/)
+		print $1;
+	}'
+)
+
+# for each one_gadget found, run the script with the one_gadget as argument
+while IFS= read -r one_gadget; do
+	echo -e "[\e[31mONEGAG\e[0m]: using one_gadget $one_gadget"
+	python3 "$script_file" ONE_GADGET="$one_gadget" < /dev/tty
+	echo ""
+	echo -n "[\e[31mONEGAG\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
+	read -n 1 -r char < /dev/tty
+	echo "char: $char"
+	if [ "$char" != 'Y' -a "$char" != 'y' -a "$char" != '' ]; then
+		break
+	fi
+done <<< "$one_gadgets"
