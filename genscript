@@ -28,13 +28,15 @@ def rop_chain(chain):
         chain[i] = p64(chain[i])
     return reduce(lambda x, y: x + y, chain)
 
-
 context.terminal = ['tmux', 'splitw', '-h']
 #context.log_level = "error"
 
 # breakpoints
 b_main = 0xffff
 
+one_gadget=0x00
+if args["ONE_GADGET"]:
+    one_gadget = args["ONE_GADGET"]
 
 if args["REMOTE"]:
 	r = remote("$1", $2)
