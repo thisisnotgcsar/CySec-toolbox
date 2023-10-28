@@ -92,8 +92,7 @@ while IFS= read -r one_gadget; do
 	else
 		python3 "$script_file" ONE_GADGET="$one_gadget" < /dev/tty
 	fi
-	echo ""
-	echo -n "[\e[31mONEGAG\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
+	echo -e -n "[\e[31mONEGAG\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
 	read -n 1 -r char < /dev/tty
 	if [ "$char" != 'Y' -a "$char" != 'y' -a "$char" != '' ]; then
 		break
