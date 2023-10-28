@@ -8,7 +8,7 @@ display_help() {
         echo "Options:"
         echo "  -h, --help		Display this help message"
         echo "  -s, --script		python script file script file to be called with provided arg. DEFAULT: 'script.py'"
-        echo "	-r, --remote		runs the python script appending also the \"REMOTE\" argument. DEFAULT: false"
+        echo "  -r, --remote		runs the python script appending also the \"REMOTE\" argument. DEFAULT: false"
 	echo "  -l, --log		appends the output of one_gadget into the file one_gadgets. DEFUALT: false"
 }
 
