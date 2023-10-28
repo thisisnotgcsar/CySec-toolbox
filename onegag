@@ -8,7 +8,8 @@ display_help() {
         echo "Options:"
         echo "  -h, --help		Display this help message"
         echo "  -s, --script		python script file script file to be called with provided arg. DEFAULT: 'script.py'"
-        echo "  -l, --log		appends the output of one_gadget into the file one_gadgets. DEFUALT: false"
+        echo "	-r, --remote		runs the python script appending also the \"REMOTE\" argument. DEFAULT: false"
+	echo "  -l, --log		appends the output of one_gadget into the file one_gadgets. DEFUALT: false"
 }
 
 
@@ -16,6 +17,7 @@ script_file="./script.py"
 log=false
 onegadget_out_file="./one_gadgets"
 input_file=""
+remote=false
 
 if [ "$#" -le 0 ]; then
 	echo "too few arguments!"
@@ -38,7 +40,10 @@ while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
 				script_file="$2"
 			fi
                         ;;
-                -l | --log)
+		-r | --remote)
+			remote=true
+			;;
+		-l | --log)
                         log=true
                         ;;
                 *)
@@ -82,11 +87,14 @@ one_gadgets=$(echo "$one_gadget_output" | awk '{
 # for each one_gadget found, run the script with the one_gadget as argument
 while IFS= read -r one_gadget; do
 	echo -e "[\e[31mONEGAG\e[0m]: using one_gadget $one_gadget"
-	python3 "$script_file" ONE_GADGET="$one_gadget" < /dev/tty
+	if $remote; then
+		python3 "$script_file" ONE_GADGET="$one_gadget" REMOTE < /dev/tty
+	else
+		python3 "$script_file" ONE_GADGET="$one_gadget" < /dev/tty
+	fi
 	echo ""
 	echo -n "[\e[31mONEGAG\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
 	read -n 1 -r char < /dev/tty
-	echo "char: $char"
 	if [ "$char" != 'Y' -a "$char" != 'y' -a "$char" != '' ]; then
 		break
 	fi
