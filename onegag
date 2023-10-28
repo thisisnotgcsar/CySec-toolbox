@@ -38,6 +38,7 @@ while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
 				exit -1
 			else
 				script_file="$2"
+				shift
 			fi
                         ;;
 		-r | --remote)
@@ -62,8 +63,9 @@ else
 	input_file="$1"
 fi
 
+
+#running one_gadget and check if everything went good otherwise display error
 one_gadget_output=$(one_gadget "$input_file")
-#check if everything went good otherwise display error
 if [ ! $? -eq 0 ]; then
 	echo "$one_gadget_output"
 	exit -1
