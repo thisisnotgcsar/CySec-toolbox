@@ -99,10 +99,10 @@ while IFS= read -r one_gadget; do
 	if [[ $counter -lt $nlines ]]; then
 		echo -e -n "[\e[31mLOTTA1GADGETS\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
 		read -n 1 -r char < /dev/tty
+		echo ""
 		if [ "$char" != 'Y' -a "$char" != 'y' -a "$char" != '' ]; then
 			break
 		fi
 		counter=$counter+1
-		echo ""
 	fi
 done <<< "$one_gadgets"
