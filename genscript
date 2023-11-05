@@ -40,13 +40,14 @@ if args["REMOTE"]:
 	r = remote("$1", $2)
 else:
 	r = process("./$3")
-	gdb.attach(r, f"""
-	# b *{b_main}
-	unset env
-	set disable-randomization off
-	set debuginfo enabled on
-	c
-	""")
+	if args["GDB"]:
+		gdb.attach(r, f"""
+		# b *{b_main}
+		unset env
+		set disable-randomization off
+		set debuginfod enabled on
+		c
+		""")
 
 #I/O functions
 
