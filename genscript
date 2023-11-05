@@ -44,6 +44,7 @@ else:
 	# b *{b_main}
 	unset env
 	set disable-randomization off
+	set debuginfo enabled on
 	c
 	""")
 
