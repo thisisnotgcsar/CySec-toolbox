@@ -9,7 +9,7 @@
 
 **gadget_finder**: automation tool to filter all the cool gadgets. It uses ROPgadget tool
 
-**onegag**: automation tool that uses the one\_gadget tool and runs a script providing each one\_gadget found in input
+**LOTTA1GADGETS**: automation tool that uses the one\_gadget tool and runs a script providing each one\_gadget found in input
 
 **shellcodes**: the sweet honey. They always here when you need one (and they come in different flavors too).
 

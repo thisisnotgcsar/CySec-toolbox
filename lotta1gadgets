@@ -9,13 +9,13 @@ display_help() {
         echo "  -h, --help		Display this help message"
         echo "  -s, --script		python script file script file to be called with provided arg. DEFAULT: 'script.py'"
         echo "  -r, --remote		runs the python script appending also the \"REMOTE\" argument. DEFAULT: false"
-	echo "  -l, --log		appends the output of one_gadget into the file one_gadgets. DEFUALT: false"
+	echo "  -l, --log		appends the output of one_gadget into the file lotta1gadgets. DEFUALT: false"
 }
 
 
 script_file="./script.py"
 log=false
-onegadget_out_file="./one_gadgets"
+onegadget_out_file="./lotta1gadgets"
 input_file=""
 remote=false
 
@@ -88,13 +88,13 @@ one_gadgets=$(echo "$one_gadget_output" | awk '{
 
 # for each one_gadget found, run the script with the one_gadget as argument
 while IFS= read -r one_gadget; do
-	echo -e "[\e[31mONEGAG\e[0m]: using one_gadget $one_gadget"
+	echo -e "[\e[31mLOTTA1GADGETS\e[0m]: using one_gadget $one_gadget"
 	if $remote; then
 		python3 "$script_file" ONE_GADGET="$one_gadget" REMOTE < /dev/tty
 	else
 		python3 "$script_file" ONE_GADGET="$one_gadget" < /dev/tty
 	fi
-	echo -e -n "[\e[31mONEGAG\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
+	echo -e -n "[\e[31mLOTTA1GADGETS\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
 	read -n 1 -r char < /dev/tty
 	if [ "$char" != 'Y' -a "$char" != 'y' -a "$char" != '' ]; then
 		break
