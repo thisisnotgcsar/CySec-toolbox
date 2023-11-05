@@ -6,9 +6,7 @@ import time
 import subprocess
 from functools import reduce
 
-r = ""
-
-def send(data):
+def send(r, data):
 	r.send(data)
 	time.sleep(0.2)
 
@@ -48,6 +46,8 @@ else:
 	set disable-randomization off
 	c
 	""")
+
+#I/O functions
 
 input("wait")
 time.sleep(0.5)
