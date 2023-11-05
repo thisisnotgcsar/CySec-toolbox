@@ -26,6 +26,9 @@ def rop_chain(chain):
         chain[i] = p64(chain[i])
     return reduce(lambda x, y: x + y, chain)
 
+
+#I/O functions
+
 context.terminal = ['tmux', 'splitw', '-h']
 #context.log_level = "error"
 
@@ -48,8 +51,6 @@ else:
 		set debuginfod enabled on
 		c
 		""")
-
-#I/O functions
 
 input("wait")
 time.sleep(0.5)
