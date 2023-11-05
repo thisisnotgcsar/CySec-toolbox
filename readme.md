@@ -11,6 +11,8 @@
 
 **LOTTA1GADGETS**: automation tool that uses the one\_gadget tool and runs a script providing each one\_gadget found in input
 
+**libc_analyzer**: tries to find certain patterns inside a proved linbc shared object file and prints related informaitons.
+
 **shellcodes**: the sweet honey. They always here when you need one (and they come in different flavors too).
 
 **configurations**: Here I share all my config files. More efficiency, across multiple machines.

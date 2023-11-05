@@ -1,0 +1,76 @@
+#!/bin/bash
+
+#shell script that "analyzes" a libc shared object provided and outputs
+#some common informations found on it
+
+display_help() {
+        echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
+        echo "Options:"
+        echo "  -h, --help		Display this help message"
+}
+
+
+if [ "$#" -le 0 ]; then
+	echo "too few arguments!"
+	display_help
+	exit -1
+fi	
+
+# Parsing options
+while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
+	case "$1" in
+                -h | --help)
+                        display_help
+                        exit 0
+                        ;;
+                *)
+                        echo "Invalid option: $1" >&2
+                        display_help
+                        exit -1
+                        ;;
+        esac
+        shift
+done
+
+libc_file=""
+
+#libc file check
+if [ ! -n "$1" -o ! -e "$1" ]; then
+	echo "input file not found"
+	exit -1
+else
+	libc_file="$1"
+fi
+
+#global var called one for optimization
+libc_strings=$(strings -a -w -t x "$libc_file")
+
+#awk filter htat takes the first column (address) of the string's output
+binsh_filter='{
+	if($2 ~ /\/bin\/sh/)
+		printf "0x%s", $1
+}'
+
+#awk filter that takes the address out of the readelf command
+system_filter='{
+	if($8 ~ /^system@@GLIBC/)
+		printf "%s", $2
+}'
+
+
+binsh_address=$(echo "$libc_strings" | awk "$binsh_filter")
+if [ -n "$binsh_address" ]; then
+	echo "/bin/sh:	$binsh_address"
+fi
+
+#last sed removes all the leading zeros
+system_address="0x$(readelf -s -W libc-2.35.so | awk "$system_filter" | sed 's/^0*//')"
+if [ -n "$system_address" ]; then
+	echo "system:		$system_address"
+fi
+
+if echo "$libc_strings" | grep -q "tcache"; then
+	echo "tcache found"
+fi
+
+
