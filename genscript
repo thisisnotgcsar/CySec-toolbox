@@ -52,6 +52,10 @@ else:
 		c
 		""")
 
+#LIBC = ELF("./path")
+#LIBC.address = 0xbase
+#LIBC.symbols["__symol_name"]
+
 input("wait")
 time.sleep(0.5)
 r.interactive()
