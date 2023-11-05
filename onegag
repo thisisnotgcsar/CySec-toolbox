@@ -99,4 +99,5 @@ while IFS= read -r one_gadget; do
 	if [ "$char" != 'Y' -a "$char" != 'y' -a "$char" != '' ]; then
 		break
 	fi
+	echo ""
 done <<< "$one_gadgets"
