@@ -30,7 +30,8 @@ def rop_chain(chain):
 #I/O functions
 
 context.terminal = ['tmux', 'splitw', '-h']
-#context.log_level = "error"
+#context.log_level = "warn"
+logging.getLogger('pwnlib.elf').setLevel(logging.ERROR)
 
 # breakpoints
 b_main = 0xffff
