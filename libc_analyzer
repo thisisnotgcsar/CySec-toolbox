@@ -64,7 +64,7 @@ if [ -n "$binsh_address" ]; then
 fi
 
 #last sed removes all the leading zeros
-system_address="0x$(readelf -s -W libc-2.35.so | awk "$system_filter" | sed 's/^0*//')"
+system_address="0x$(readelf -s -W "$libc_file" | awk "$system_filter" | sed 's/^0*//')"
 if [ -n "$system_address" ]; then
 	echo "system:		$system_address"
 fi
