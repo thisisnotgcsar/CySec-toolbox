@@ -4,25 +4,75 @@
 # search in an executable file a call for ptrace and NOPs it
 # it is assumed there is only one call to it, subsequent ones won't be found
 #
+# it can also NOP a particular bytes signature provided by input
 # superuser
 
-# verbose mode
-if [ -n "$1" ] && [ "-v" = "$1" -o "--verbose" = "$1" ]; then
-	verbose=1
-	shift
-else
-	verbose=0
+
+display_help() {
+	echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
+	echo "Options:"
+	echo "  -h, --help              Display this help message"
+	echo "  -p, --pattern [PATTERN]	NOPs also all the bytes that match with pattern"
+	echo "  -v, --verbose		Verbose mode DEFAULT: False"
+	echo "EXAMPLE: illtrace file.exe -> search and NOPs ptrace"
+	echo "EXAMPLE: illtrace -v -p e821f4ffff file.exe -> search and NOPs ALSO pattern"
+}
+
+
+if [ "$#" -le 0 ]; then
+	echo "too few arguments!"
+	display_help
+	exit -1
 fi
 
-# argument checking
-if [ -n "$1" -a -e "$1" ]; then
+verbose=0
+pattern=""
+origin=""
+
+# Parsing options
+while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
+	case "$1" in
+	-h | --help)
+		display_help
+		exit 0
+		;;
+	-v | --verbose)
+		verbose=1
+		;;
+	-p | --pattern)
+		if [[ -n "$2" && "$2" =~ ^[0-9a-fA-F]+$ ]] && (( ${#2} % 2 == 0 )); then
+			pattern="$2"
+			shift
+		else
+			echo "provide a valid pattern"
+			exit -1
+		fi
+		;;
+	*)
+		echo "Invalid option: $1" >&2
+		display_help
+		exit -1
+		;;
+	esac
+	shift
+done
+
+#input file check
+if [ ! -n "$1" -o ! -e "$1" ]; then
+	echo "input file not found"
+	exit -1
+else
 	origin="$1"
 	desthex="$1.hex"
 	destmod="$1.mod"
-else
-	echo "origin file not found"
-	exit -1
 fi
+
+
+#creates a string of NOPs based on $1 (number of NOPs to have)
+nop_builder() {
+	echo -n $(printf '90%.0s' $(seq 1 "$1"))
+}
+
 
 # start and end assembly ptrace fingerprints
 start_s="b900000000ba01000000be00000000bf00000000b800000000"
@@ -31,6 +81,7 @@ end_s="4883f8ff"
 # transform the exe into an hex string
 origin_s=$(xxd -p "$origin" | tr -d '\n')
 
+# PTRACE NOPPING
 # try to find if it contains the fingerprints
 # and take their indeces
 rest1=${origin_s#*$start_s}
@@ -38,28 +89,40 @@ start_index=$(( ${#origin_s} - ${#rest1} ))
 rest2=${origin_s#*$end_s}
 end_index=$(( ${#origin_s} - ${#rest2} - ${#end_s} ))
 
-if [ "$verbose" -eq 1 ]; then
-	echo "incipit found at index $start_index"
-	echo "prolog found at index $end_index"
-fi
 # check if indeces found and are somewhat correct
 if [ "$start_index" -le 0 -a "$end_index" -le "$start_index" ]; then
-	echo "aborting"
-	exit -1
+	echo "ptrace not found"
+else
+	echo "ptrace found!"
+	if [ "$verbose" -eq 1 ]; then
+		echo "incipit found at index $start_index"
+		echo "prolog found at index $end_index"
+	fi
+	# count how many NOPs to insert in place of the call, build them and substitute
+	replace_count=$(( (end_index - start_index) / 2 ))
+	replace_s=$(nop_builder "$replace_count")
+	origin_s="${origin_s:0:start_index}$replace_s${origin_s:end_index}"
 fi
 
-# count how many NOPs to insert in place of the call and build them
-replace_count=$(( (end_index - start_index) / 2 ))
-replace_s=$(printf '90%.0s' $(seq 1 "$replace_count"))
 
-# modified version of the hex of the exe
-origin_mod="${origin_s:0:start_index}$replace_s${origin_s:end_index}"
+#PATTERN NOPPING
+if [ -n "$pattern" ]; then	
+	# Check if the substring exists in the original string
+	if [[ $origin_s == *"$pattern"* ]]; then
+		echo "pattern found!"
+		#count how many NOPs to insert in place of PATTERN and substitutes
+		replace_s=$(nop_builder $(( ${#pattern} / 2 )) )
+		origin_s="${origin_s/$pattern/$replace_s}"
+	else
+		echo "pattern not found"
+	fi
+fi
 
 if [ "$verbose" -eq 1 ]; then
-	echo -n "$origin_mod" > "$desthex"
+	echo -n "$origin_s" > "$desthex"
 	echo "create modified hex dump in $desthex"
 fi
 
 # recreating the exe from the modified version
-echo -n "$origin_mod" | xxd -r -p  > "$destmod"
+echo -n "$origin_s" | xxd -r -p  > "$destmod"
 chmod +x "$destmod"
