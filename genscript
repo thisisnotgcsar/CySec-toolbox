@@ -26,6 +26,10 @@ def rop_chain(chain):
         chain[i] = p64(chain[i])
     return reduce(lambda x, y: x + y, chain)
 
+# transforms an integer to bytes with the minimum number of bytes possible
+def int2bytes(num: int) -> bytes:
+	return num.to_bytes((num.bit_length() + 7) // 8, byteorder='little', signed=True if num < 0 else False)).ljust(8, b"\x00")
+
 
 #I/O functions
 
