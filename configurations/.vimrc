@@ -16,8 +16,11 @@ set tabstop=4
 " use tab characters instead of spaces
 set noet
 
-"> indentation is 1 tab
+" > indentation is 1 tab
 set shiftwidth=4
+
+" the name says it all
+set smartindent
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
 set nowrap
