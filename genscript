@@ -1,4 +1,4 @@
-#!/bin/sh
+!/bin/sh
 
 cat > ./script.py << EOM
 from pwn import *
@@ -21,10 +21,10 @@ def genbin(binary_name):
 		print(f"An exception occurred: {e}")
 		exit(-1)
 
-def rop_chain(chain):     
-    for i in range(len(chain)):
-        chain[i] = p64(chain[i])
-    return reduce(lambda x, y: x + y, chain)
+def rop_chain(chain):	
+	for i in range(len(chain)):
+		chain[i] = p64(chain[i])
+	return reduce(lambda x, y: x + y, chain)
 
 # transforms an integer to bytes with the minimum number of bytes possible
 def int2bytes(num: int) -> bytes:
@@ -42,7 +42,7 @@ b_main = 0xffff
 
 one_gadget=0x00
 if args["ONE_GADGET"]:
-    one_gadget = int(args["ONE_GADGET"], 16)
+	one_gadget = int(args["ONE_GADGET"], 16)
 
 if args["REMOTE"]:
 	r = remote("$1", $2)
