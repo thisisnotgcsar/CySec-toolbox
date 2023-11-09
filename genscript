@@ -8,7 +8,7 @@ from functools import reduce
 
 def send(r, data):
 	r.send(data)
-	time.sleep(0.2)
+	time.sleep(0.1)
 
 def print_red(str):
 	print("\033[91m" + str + "\033[0m")
