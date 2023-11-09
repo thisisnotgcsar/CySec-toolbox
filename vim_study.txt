@@ -1,0 +1,42 @@
+# this is a file for memorizing all the vim commands that I know
+
+w - jump to the beginning of the word
+e - jump to the end of the word
+I - Insert at the begging of the line
+A - Insert at the end of the line
+i - normal mode
+o - Insert in line under
+O - Insert in line above
+:%s/regex1/regex2/g - replace all occurences of regex with other regex
+:s/regex1/regex2/g - replace one occurence of regex with other regex
+cw - change word
+dd - delete line
+cc - change line
+u - undo
+CTRL + R - redo
+/regex - performs a search
+ciw - change inner word
+diw - delete inner word
+ci( - change inner parenthesis
+% - jump between brackets
+c% - change lines between parenthesis
+:19 - jump to line 19
+$ - jump to the end of the line
+0 - jump to the beginning of the line
+y - yank (copy), in visual mode
+SHIFT + v - visual line
+CTRL +v - visual block
+ZZ - save and exit
+zz - center the screen to the current line
+> < - shift 
+- indent
+gg=G - indent the whole
+n - next occurence
+N - previous occurence
+:set relativenumber - activate relative numbers
+:set autoindent - activate auto indentation
+r - change current character 
+:tabstop=4 - pressing tab is equal to putting 4 spaces
+:set expandtab
+: set noexpandtab
+:retab!
