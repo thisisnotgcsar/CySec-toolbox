@@ -4,12 +4,6 @@ set nocompatible
 " Enable type file detection. Vim will be able to try to detect the type of file in use.
 filetype on
 
-" Enable plugins and load plugin for the detected file type.
-filetype plugin on
-
-" Load an indent file for the detected file type.
-filetype indent on
-
 " Turn syntax highlighting on.
 syntax on
 
@@ -20,7 +14,7 @@ set relativenumber
 set tabstop=4
 
 " use tab characters instead of spaces
-set noexpandtab
+set noet
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
 set nowrap
