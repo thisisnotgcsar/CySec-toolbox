@@ -36,7 +36,10 @@ N - previous occurence
 :set relativenumber - activate relative numbers
 :set autoindent - activate auto indentation
 r - change current character 
-:tabstop=4 - pressing tab is equal to putting 4 spaces
-:set expandtab
-: set noexpandtab
-:retab!
+:tabstop=4 - how many space a tab should be
+:set expandtab - future tabs are converted to spaces
+: set noexpandtab - 
+:retab - convert tabs to spaces
+:retab! - convert spaces to tabs
+:set list
+:set nolist
