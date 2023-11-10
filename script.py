@@ -21,8 +21,8 @@ def send(r, data):
 	if isinstance(data, list):
 		for datum in data:
 			result += any2bytes(datum)
-		else:
-			result = any2bytes(data)
+	else:
+		result = any2bytes(data)
 	r.sendline(result)
 	time.sleep(0.05)
 
