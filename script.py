@@ -72,4 +72,6 @@ else:
 #LIBC.address = 0xbase
 #LIBC.symbols["__symol_name"]
 
+time.sleep(0.5)
+
 r.interactive()
