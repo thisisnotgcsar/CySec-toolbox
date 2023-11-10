@@ -6,11 +6,11 @@ from functools import reduce
 def int2bytes(num: int, adjust=8) -> bytes:
 	return num.to_bytes((num.bit_length() + 7) // 8, byteorder='little', signed=True if num < 0 else False).ljust(adjust, b"\x00")
 
-def any2bytes(datum):
+def any2bytes(datum, adjust=8):
 	if isinstance(datum, str):
 		return datum.encode()
 	elif isinstance(datum, int):
-		return int2bytes(datum)
+		return int2bytes(datum, adjust)
 	elif isinstance(datum, bytes):
 		return datum
 	else:
