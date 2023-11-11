@@ -22,4 +22,4 @@ copy .vimrc inside ~
 ltrace
 sxhkd
 xdotool
-
+sxhkd.desktop va messo dentro ~/.config/autostart/

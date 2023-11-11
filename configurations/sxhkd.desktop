@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=sxhkd
+Comment=Simple X hotkey daemon
+Exec=sh -c "pgrep sxhkd || sxhkd -c ~/.sxhkdrc &"
+Terminal=false
+Type=Application
