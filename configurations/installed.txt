@@ -20,3 +20,6 @@ pwntols
 ida: scarichi e installi il file poi devi eseguire prima questo: sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev. dopodiche ida64 partirà
 copy .vimrc inside ~
 ltrace
+sxhkd
+xdotool
+

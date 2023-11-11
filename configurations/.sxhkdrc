@@ -1,0 +1,2 @@
+shift + @apostrophe
+  pkill -USR2 -x sxhkd; xdotool key shift+quotedbl key shift+quotedbl key Left; pkill -USR2 -x sxhkd
