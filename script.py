@@ -19,14 +19,17 @@ def any2bytes(datum, adjust=8):
 	else:
 		raise TypeError("any2bytes: datum provided is neither str, int or bytes object")
 
-def send(r, data):
+def send(r, data, newline=True):
 	result=b""
 	if isinstance(data, list):
 		for datum in data:
 			result += any2bytes(datum)
 	else:
 		result = any2bytes(data)
-	r.sendline(result)
+	if newline:
+		r.sendline(result)
+	else:
+		r.send(result)
 	time.sleep(0.05)
 
 def print_red(str):
