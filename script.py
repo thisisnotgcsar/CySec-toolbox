@@ -58,18 +58,17 @@ one_gadget=0x00
 if args["ONE_GADGET"]:
 	one_gadget = int(args["ONE_GADGET"], 16)
 if args["REMOTE"]:
-	r = remote()
+	r = remote("url$1", port$2)
+elif args["GDB"]:
+	r = gdb.attach("./exe$3", f"""
+		# b *{b_main}
+		unset env
+		set disable-randomization off
+		set debuginfod enabled on
+		c
+		""")
 else:
-	r = process()
-	if args["GDB"]:
-		gdb.attach(r, f"""
-			# b *{b_main}
-			unset env
-			set disable-randomization off
-			set debuginfod enabled on
-			c
-			""")
-		input("wait")
+	r = process("./exe$3")
 
 #LIBC = ELF("./path")
 #LIBC.address = 0xbase

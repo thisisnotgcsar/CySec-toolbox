@@ -1,5 +1,6 @@
 #!/bin/bash
 
 script=$(cat ~/challenges/playroom/script.py)
-script_with_values=$(echo "$script" | sed -e "s/remote()/remote(\"$1\", $2)/g" | sed -e "s/process()/process(\"\.\/$3\")/g")
+# url$1 -> $1, port$2 -> $2, exe$3 -> ./$3
+script_with_values=$(echo "$script" | sed -e "s/url\$1/$1/g" | sed -e "s/port\$2/$2/g" | sed -e "s/exe\$3/$3/g")
 echo "$script_with_values" > script.py
