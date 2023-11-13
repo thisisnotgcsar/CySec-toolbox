@@ -61,15 +61,15 @@ if args["REMOTE"]:
 	r = remote()
 else:
 	r = process()
-		if args["GDB"]:
-			gdb.attach(r, f"""
-				# b *{b_main}
-				unset env
-				set disable-randomization off
-				set debuginfod enabled on
-				c
-				""")
-			input("wait")
+	if args["GDB"]:
+		gdb.attach(r, f"""
+			# b *{b_main}
+			unset env
+			set disable-randomization off
+			set debuginfod enabled on
+			c
+			""")
+		input("wait")
 
 #LIBC = ELF("./path")
 #LIBC.address = 0xbase
