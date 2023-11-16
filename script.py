@@ -4,8 +4,8 @@ import subprocess
 from functools import reduce
 import z3
 
-def bytes2int(data, byteordered="little"):
-	return int.from_bytes(data, byteordered="little")
+def bytes2int(data, byteorder="little"):
+	return int.from_bytes(data, byteorder="little")
 
 def int2bytes(num: int, adjust=8) -> bytes:
 	return num.to_bytes((num.bit_length() + 7) // 8, byteorder='little', signed=True if num < 0 else False).ljust(adjust, b"\x00")
