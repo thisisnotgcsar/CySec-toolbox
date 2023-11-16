@@ -2,6 +2,7 @@ from pwn import *
 import time
 import subprocess
 from functools import reduce
+import z3
 
 def bytes2int(data, byteordered="little"):
 	return int.from_bytes(data, byteordered="little")
