@@ -42,9 +42,6 @@ else
 	libc_file="$1"
 fi
 
-#global var called one for optimization
-libc_strings=$(strings -a -w -t x "$libc_file")
-
 #awk filter htat takes the first column (address) of the string's output
 binsh_filter='{
 	if($2 ~ /\/bin\/sh/)
@@ -57,20 +54,16 @@ system_filter='{
 		printf "%s", $2
 }'
 
-
-binsh_address=$(echo "$libc_strings" | awk "$binsh_filter")
+binsh_address=$(echo "$(strings -a -w -t x "$libc_file")"  | awk "$binsh_filter")
 if [ -n "$binsh_address" ]; then
 	echo "/bin/sh:	$binsh_address"
 fi
 
 #last sed removes all the leading zeros
-system_address="0x$(readelf -s -W "$libc_file" | awk "$system_filter" | sed 's/^0*//')"
+system_address="0x$(readelf -s -W "$libc_file" 2>/dev/null | awk "$system_filter" | sed 's/^0*//')"
 if [ -n "$system_address" ]; then
 	echo "system:		$system_address"
 fi
 
-if echo "$libc_strings" | grep -q "tcache"; then
-	echo "tcache found"
-fi
 
 
