@@ -23,3 +23,4 @@ ltrace
 sxhkd
 xdotool
 sxhkd.desktop va messo dentro ~/.config/autostart/
+z3
