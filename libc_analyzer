@@ -4,7 +4,7 @@
 #some common informations found on it
 
 display_help() {
-        echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
+        echo "Usage: $(basename "$0") [OPTIONS] [LD_FILE] [LIBC_FILE]"
         echo "Options:"
         echo "  -h, --help		Display this help message"
 }
@@ -33,13 +33,24 @@ while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
 done
 
 libc_file=""
+ld_file=""
+
+#ld file check
+if [ ! -n "$1" -o ! -e "$1" ]; then
+	echo "ld file not found"
+	exit -1
+else
+	ld_file="$1"
+	shift
+fi
 
 #libc file check
 if [ ! -n "$1" -o ! -e "$1" ]; then
-	echo "input file not found"
+	echo "libc file not found"
 	exit -1
 else
 	libc_file="$1"
+	shift
 fi
 
 #awk filter htat takes the first column (address) of the string's output
@@ -65,5 +76,15 @@ if [ -n "$system_address" ]; then
 	echo "system:		$system_address"
 fi
 
-
-
+#tcache check
+gcc -g -o check_tcache ~/challenges/playroom/check_tcache.c -no-pie "$libc_file"
+patchelf --set-interpreter "$ld_file" --replace-needed libc.so.6 "$libc_file" check_tcache
+check_tcache=$(./check_tcache)
+# Check the exit status
+if [ $? -eq 0 ]; then
+	echo "TCACHE FOUND"
+	echo "$check_tcache"
+else
+	echo "TCACHE NOT FOUND"
+fi
+rm ./check_tcache

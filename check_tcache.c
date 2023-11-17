@@ -2,10 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 
-// remember to compile like this:
-// gcc -g -o check_tcache check_tcache.c -no-pie ./path_to_libc
-// then use patchelf
-// comment implement gracefull error and tcache check via bash
 
 //where I will allocate for fastbin attack (.bss)
 static long long data[8];
@@ -37,12 +33,10 @@ int main(){
 	printf("FREE @ %p\n", tcache - 0x10);
 	print_qword(tcache - 0x10, 9);
 	
-	*((long long*)tcache) = (long long)data;
+	*((long long*)tcache) = (long long)data + 0x10;
 	tcache = malloc(0x30); //first
 	void* tcache2 = malloc(0x30); //second (tcache2 should point to data)
 	printf("&data: %p, FASTBIN ATTACK ALLOC @ %p\n", data, tcache2);
 	print_qword(tcache2 - 0x10, 9);
-
-	scanf("%i", &i);
 	return 0;
 }
