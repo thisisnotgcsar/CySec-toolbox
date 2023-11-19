@@ -1,4 +1,4 @@
-# CySec pl4yr00m
+# CySec g4r4g3
 **genbin**: you will just need to give him some assembly instructions and he will generate you an optimized version of machine code!
 
 **genscript**: this is a friend that just spawns a script template for binary ctfs
