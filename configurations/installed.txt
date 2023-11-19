@@ -25,3 +25,4 @@ xdotool
 sxhkd.desktop va messo dentro ~/.config/autostart/
 z3
 pip install z3-solver
+pip install angr
