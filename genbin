@@ -1,6 +1,10 @@
 #!/bin/bash
 
+# writes to stdout the hex bytecodes of an assmebled assembly file given from stdin with 64 bit architecture
+# if no file is provided, stdin is read
+
 # awk filter to cut the bytecodes from objdump output
+# not used anymore
 awk_filter='{
 	for(i=1; i <=7; i++)
 		if($i ~ /^[0-9a-f]+$/)
@@ -9,6 +13,8 @@ awk_filter='{
 
 # Define a function to display the usage/help message
 display_help() {
+	echo "genbin writes to stdout the hex bytecodes of an assembled assembly file given from stdin with 64 but architecture"
+	echo "if no file is provided, stdin is read."
 	echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
 	echo "Options:"
 	echo "  -h, --help		Display this help message"
@@ -53,23 +59,46 @@ else
 	exit 1
 fi
 
+# getting the code
 asm=$(cat "$file")
 
+# nasm is not like as
+# It will complain if you give it in input a not well formatted assembly file
+# So we have to prepend this initial stub
 asm_completed="section .text
 global _start
 _start:
 ${asm}"
-
 echo "$asm_completed" > a.temp
+# assembling for 64 bit arch just to get to the object file
+# this makes disassembling easier and more quality
 nasm -f elf64 -g -F dwarf -o a.temp.o a.temp
+
+# old version of the program was using objdump to disassemble file
+# output was then filtered out with awk
 #objdump -d --no-addresses -M intel a.temp.o > a.temp.dump 
 #awk "$awk_filter" a.temp.dump > a.temp.filtered
+
+# now we use objcopy, similar to objdump
+# converts object file into its binary representation 
 objcopy -O binary a.temp.o a.temp.o2
+
+# od converts the representation of a file
+# -An stripps the address offset column from the input
+# -v outputs all input data, including consecutive identical lines
+# -t x1 specifies the output format as hexadecimal with 1 byte per line
+# it is then used tr to delete all new lines characters obtaining a single long line of hex
 od -An -v -t x1 a.temp.o2 | tr -d ' \n' > a.temp.filtered
+
+# creating different versions of the output
+# normal
+# with '\x' appended to each hex byte
+# and calculating the total number of resulting bytes
 filtered=$(cat a.temp.filtered)
 filtered_slashx=$(echo "$filtered" | sed 's/../\\x&/g')
 total_bytes=$((${#filtered} / 2))
 
+# output
 if [ "$bx" = true ]; then
 	echo "$filtered_slashx"
 else
@@ -79,7 +108,7 @@ if [ "$nb" = true ]; then
 	echo "$total_bytes"
 fi
 
-
+# cleaning
 rm a.temp
 rm a.temp.o
 #rm a.temp.dump
