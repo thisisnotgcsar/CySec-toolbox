@@ -1,6 +1,36 @@
 #!/bin/bash
+# creates in current working directory a template python file for pwning named "script.py"
+# the generated script file is already set with the parameters passed in input
 
-script=$(cat ~/challenges/playroom/script.py)
-# url$1 -> $1, port$2 -> $2, exe$3 -> ./$3
+# Define a function to display the usage/help message
+display_help() {
+    echo "Usage: $(basename "$0") [OPTIONS] [ARGS]"
+    echo "Arguments are optional and used to insert in the generated template script certain parameters for the script:"
+	echo "\$\1 -> remote address"
+	echo "\$\2 -> remote port"
+	echo "\$\3 -> local executable file basename"
+    echo "Options:"
+    echo "  -h, --help      Display this help message"
+}
+
+ # Parsing options and arguments
+while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
+	case "$1" in
+		-h | --help)
+			display_help
+			exit 0
+			;;
+	esac
+	shift
+done
+
+
+#gettings script.py template file
+script=$(cat "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/.script.py)
+
+# substituting keywords inside script.py with the actual values passed by parameters
+#url$1 -> $1, port$2 -> $2, exe$3 -> ./$3
 script_with_values=$(echo "$script" | sed -e "s/url\$1/$1/g" | sed -e "s/port\$2/$2/g" | sed -e "s/exe\$3/$3/g")
+
+# generting the custumized template script in current working directory
 echo "$script_with_values" > script.py
