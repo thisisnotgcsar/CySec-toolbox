@@ -8,6 +8,7 @@
 # 	- all lines that contain a mov rsp, *** operation
 
 
+# check for help option
 if [ -n "$1" ] && [ "-h" = "$1" -o "--help" = "$1" ]; then
 	echo -e "script for gadgets finding optimization"
 	echo "it runs ROPgadget and puts the output to a gadgets file"
@@ -24,22 +25,18 @@ if [ -n "$1" ] && [ "-h" = "$1" -o "--help" = "$1" ]; then
  
 fi
 
+# check if file provided in input exists
 if [ ! -n "$1" -o ! -e "$1" ]; then
 	echo "file not found"
 	exit -1
 fi
 
+# executing ROPgadget in it
 ROPgadget --binary "$1" > gadgets
 
-# all lines that fnish with ret or syscall
-#awk 'NF == 3 && ($3 ~ /ret$|syscall$/)' gadgets
-
-# all lines that have only one pop
-#awk 'NF == 6 && ($3 ~ /pop/) && ($NF ~ /ret$|syscall$/)' gadgets 
-
-
+# awk filter for all lines of gadgets file
+# and printing to stdout the result after the filter
 awk '{
-#awk filter for all lines of gadgets file
 # check if the string ends with ret or syscal
 if ($NF ~ /(ret|syscall)$/){
 	
