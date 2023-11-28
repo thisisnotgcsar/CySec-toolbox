@@ -4,7 +4,7 @@
 
 # Define a function to display the usage/help message
 display_help() {
-    echo "genscript creates in current working directory a template python file for pwning named "script.py."
+    echo "genscript creates in current working directory a template python file for pwning named \"script.py.\""
 	echo "The generated script file is already set with the parameters passed in input."
 	echo "Usage: $(basename "$0") [OPTIONS] [ARGS]"
     echo "Arguments are optional and used to insert in the generated template script certain parameters for the script:"
@@ -28,7 +28,7 @@ done
 
 
 #gettings script.py template file
-script=$(cat "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/.script.py)
+script=$(cat "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/script.py)
 
 # substituting keywords inside script.py with the actual values passed by parameters
 #url$1 -> $1, port$2 -> $2, exe$3 -> ./$3
