@@ -1,0 +1,112 @@
+#!/bin/bash
+
+#shell script that "analyzes" a libc shared object provided and outputs some common informations found on it
+# It tries to understand if the libc version provided in input is using tcache
+# and if yes, how it behaves (allocating, deallocating, key implementation, fastbin attack...)
+
+# this script works with patchelf and check_tcache.c template c file
+# it pathces the c file with patchelf with the libc and ld provided in input
+# and then it compiles and runs the file and outputs to stdout what it discovered
+
+display_help() {
+	echo "shell script that "analyzes" a libc shared object provided and outputs some common informations found on it"
+	echo "It tries to understand if the libc version provided in input is using tcache"
+	echo "and if yes, how it behaves (allocating, deallocating, key implementation, fastbin attack...)"
+	echo "Usage: $(basename "$0") [OPTIONS] LD_FILE LIBC_FILE"
+	echo "Options:"
+	echo "  -h, --help		Display this help message"
+}
+
+
+# checking if theres at least one file in input
+if [ "$#" -le 0 ]; then
+	echo "too few arguments!"
+	display_help
+	exit -1
+fi	
+
+# Parsing options
+while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
+	case "$1" in
+                -h | --help)
+                        display_help
+                        exit 0
+                        ;;
+                *)
+                        echo "Invalid option: $1" >&2
+                        display_help
+                        exit -1
+                        ;;
+        esac
+        shift
+done
+
+libc_file=""
+ld_file=""
+
+#ld file check and prepends it with ./ if no already present
+# this is for patchelf cause otherwise it complains
+if [ ! -n "$1" -o ! -e "$1" ]; then
+	echo "ld file not found"
+	exit -1
+else
+	if [[ ! $1 == "./"* ]]; then
+		ld_file="./"
+	fi
+	ld_file="$ld_file$1"
+	shift
+fi
+
+#libc file check
+if [ ! -n "$1" -o ! -e "$1" ]; then
+	echo "libc file not found"
+	exit -1
+else
+	if [[ ! $1 == "./"* ]]; then
+		libc_file="./"
+	fi
+	libc_file="$libc_file$1"
+	shift
+fi
+
+#awk filter that takes the first column (address) of the string's output
+binsh_filter='{
+	if($2 ~ /\/bin\/sh/)
+		printf "0x%s", $1
+}'
+
+#awk filter that takes the address out of the readelf command
+system_filter='{
+	if($8 ~ /^system@@GLIBC/)
+		printf "%s", $2
+}'
+
+# finds address of the string '/bin/sh' inside provided libc and outputs it if found
+binsh_address=$(echo "$(strings -a -w -t x "$libc_file")"  | awk "$binsh_filter")
+if [ -n "$binsh_address" ]; then
+	echo "/bin/sh:	$binsh_address"
+fi
+
+# finds address of the systme funciton if present in the libc provided and prints it
+#last sed removes all the leading zeros
+system_address="0x$(readelf -s -W "$libc_file" 2>/dev/null | awk "$system_filter" | sed 's/^0*//')"
+if [ -n "$system_address" ]; then
+	echo "system:		$system_address"
+fi
+
+# tcache check
+# compiles code and then patches the executable with the ld and libc provided in input
+# and thne runs it and display its output
+gcc -g -o check_tcache "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"/check_tcache.c -no-pie "$libc_file"
+patchelf --set-interpreter "$ld_file" --replace-needed libc.so.6 "$libc_file" check_tcache
+check_tcache=$(./check_tcache)
+# Check the exit status
+if [ $? -eq 0 ]; then
+	echo "TCACHE FOUND"
+	echo "$check_tcache"
+else
+	echo "TCACHE NOT FOUND"
+fi
+
+#cleaning
+rm ./check_tcache
