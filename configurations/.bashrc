@@ -116,10 +116,18 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#ADDED COMMANDS
+#importing environemt (JAVA_HOME variable)
 source /etc/environment
+#prompt just contains the last folder in the pwd
 PS1="\W\$ "
-PATH=/home/superuser/challenges/playroom:$PATH
+# add all the garage to the path and all its non hidden subfolders
+PATH=$(find ~/challenges/playroom/ -type d -not -path '*/.*' | tr '\n' ':')$PATH
+# setting ccb alias for copy pasting files via command line
 alias ccb="xclip -sel c < "
+#setting cd_playroom alias for changing directory quickly
 alias cd_playroom="cd ~/challenges/playroom/"
+#setting cd_odc alias for changing directory quickly
 alias cd_odc="cd ~/challenges/ODC/"
+# starting a tmux session if not already present when opening bash and setting ~/challenges/ODC as pwd
 [ -z "$TMUX" ] && cd ~/challenges/ODC && exec tmux 
