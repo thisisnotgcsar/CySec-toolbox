@@ -4,7 +4,9 @@
 
 # Define a function to display the usage/help message
 display_help() {
-    echo "Usage: $(basename "$0") [OPTIONS] [ARGS]"
+    echo "genscript creates in current working directory a template python file for pwning named "script.py."
+	echo "The generated script file is already set with the parameters passed in input."
+	echo "Usage: $(basename "$0") [OPTIONS] [ARGS]"
     echo "Arguments are optional and used to insert in the generated template script certain parameters for the script:"
 	echo "\$\1 -> remote address"
 	echo "\$\2 -> remote port"
