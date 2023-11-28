@@ -4,18 +4,21 @@
 # calls the python script you provided in input with as argument each one_gadgets offsetts he found
 
 display_help() {
-        echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
-        echo "Options:"
-        echo "  -h, --help		Display this help message"
-        echo "  -s, --script		python script file script file to be called with provided arg. DEFAULT: 'script.py'"
-        echo "  -r, --remote		runs the python script appending also the \"REMOTE\" argument. DEFAULT: false"
+	echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
+	echo "shell script that given a file in input searches all the one_gadgets inside it and then"
+	echo "calls the python script you provided in input with as argument each one_gadgets offsets it has found"
+	echo "Options:"
+	echo "  -h, --help		Display this help message"
+	echo "  -s, --script		python script file script file to be called with provided arg. DEFAULT: 'script.py'"
+	echo "  -r, --remote		runs the python script appending also the \"REMOTE\" argument. DEFAULT: false"
 	echo "  -l, --log		appends the output of one_gadget into the file lotta1gadgets. DEFUALT: false"
 }
 
 
+# default script file is named "script.py"
 script_file="./script.py"
 log=false
-onegadget_out_file="./lotta1gadgets"
+onegadget_out_file="./1gadgetsarmy"
 input_file=""
 remote=false
 
@@ -56,6 +59,7 @@ while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
         shift
 done
 
+# gets libc in input
 if [ ! -n "$1" -o ! -e "$1" ]; then
 	echo "input file not found"
 	exit -1
