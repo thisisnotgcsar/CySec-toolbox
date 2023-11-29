@@ -57,7 +57,7 @@ fi
 
 # substituting keywords inside script.py with the actual values passed by parameters
 #url$1 -> $1, port$2 -> $2, exe$3 -> ./$3
-script_with_values=$(echo "$script" | sed -e "s/url\$1/$1/g" | sed -e "s/port\$2/$2/g" | sed -e "s/exe\$3/$3/g")
+script_with_values=$(echo "$script" | sed -e "s#url\$1#$1#g" | sed -e "s#port\$2#$2#g" | sed -e "s#exe\$3#$3#g")
 
 # generting the custumized template script in current working directory
 echo "$script_with_values" > script.py
