@@ -12,15 +12,29 @@ display_help() {
 	echo "\$\2 -> remote port"
 	echo "\$\3 -> local executable file basename"
     echo "Options:"
-    echo "  -h, --help      Display this help message"
+    echo -e "  -h, --help\t\tDisplay this help message"
+	echo -e "  -t, --template	script template. You can choose from a pwn template or a web template respectively via\n\t\t\t'p', 'pwn' or 'w', 'web' as the next arguments"
 }
 
- # Parsing options and arguments
+script_file="/pwn_script.py"
+
+# Parsing options and arguments
 while [ "$#" -gt 0 ] && [[ "$1" == -* ]]; do
 	case "$1" in
 		-h | --help)
 			display_help
 			exit 0
+			;;
+		-t | --template)
+			if [[ "$2" == "w" || "$2" == "web" ]]; then
+				script_file="/web_script.py"
+			elif [[ "$2" == "p" || "$2" == "pwn" ]]; then
+				script_file="/pwn_script.py"
+			else
+				echo "unrecognized template"
+				exit -1
+			fi
+			shift
 			;;
 		*)
 			echo "Invalid option: $1" >&2
@@ -34,7 +48,12 @@ done
 
 
 #gettings script.py template file
-script=$(cat "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/script.py)
+script=$(cat "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )""$script_file")
+
+# if third arg (local exe) has passed with ./ prepended, cut away those chars
+if [ -n "$3" ] && [[ "$3" == "./"* ]]; then
+	set -- "$1" "$2" "${3:2}"
+fi
 
 # substituting keywords inside script.py with the actual values passed by parameters
 #url$1 -> $1, port$2 -> $2, exe$3 -> ./$3
