@@ -29,8 +29,8 @@ CTRL +v - visual block
 ZZ - save and exit
 zz - center the screen to the current line
 > < - shift 
-- indent
-gg=G - indent the whole
+= - indent
+gg=G - indent the whole file
 n - next occurence
 N - previous occurence
 :set relativenumber - activate relative numbers
