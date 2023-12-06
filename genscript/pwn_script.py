@@ -58,9 +58,9 @@ logging.getLogger('pwnlib.elf').setLevel(logging.ERROR)
 # breakpoints
 b_main = 0xffff
 
-one_gadget=0x00
-if args["ONE_GADGET"]:
-	one_gadget = int(args["ONE_GADGET"], 16)
+magic_gadget=0x00
+if args["MAGIC_GADGET"]:
+	magic_gadget = int(args["MAGIC_GADGET"], 16)
 if args["REMOTE"]:
 	r = remote("url$1", port$2)
 elif args["GDB"]:

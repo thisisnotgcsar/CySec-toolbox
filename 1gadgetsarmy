@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# shell script that given a file in input searches all the one_gadgets inside it and then
-# calls the python script you provided in input with as argument each one_gadgets offsetts he found
+# This shell script takes an input file and searches for all the magic gadgets within it. 
+# It then proceeds to call the provided Python script with each discovered magic gadget offset as an argument.
 
 display_help() {
 	echo "Usage: $(basename "$0") [OPTIONS] [FILE]"
-	echo "shell script that given a file in input searches all the one_gadgets inside it and then"
-	echo "calls the python script you provided in input with as argument each one_gadgets offsets it has found"
+	echo "shell script that given a file in input searches all the magic_gadgets inside it and then"
+	echo "calls the python script you provided in input with as argument each magic_gadget's offset it has found"
 	echo "Options:"
 	echo "  -h, --help		Display this help message"
 	echo "  -s, --script		python script file script file to be called with provided arg. DEFAULT: 'script.py'"
@@ -81,8 +81,8 @@ if $log; then
 fi
 
 
-#filtering one_gadget output and getting only the offsets of the one_gadgets
-one_gadgets=$(echo "$one_gadget_output" | awk '{
+#filtering one_gadget output and getting only the offsets of the magic gadgets
+magic_gadgets=$(echo "$one_gadget_output" | awk '{
 	#awk filter for one_gadgte typical output
 	# print first column of all lines in which first coulmn is an hex number
 	if($1 ~ /^0x[a-z1-9A-F]+/)
@@ -90,18 +90,18 @@ one_gadgets=$(echo "$one_gadget_output" | awk '{
 	}'
 )
 
-# for each one_gadget found, run the script with the one_gadget as argument
+# for each magic_gadget found, run the script with the magic_gadget as argument
 counter=0
-nlines=$(echo "$one_gadgets" | wc -l)-1
-while IFS= read -r one_gadget; do
-	echo -e "[\e[31mLOTTA1GADGETS\e[0m]: using one_gadget $one_gadget"
+nlines=$(echo "$magic_gadgets" | wc -l)-1
+while IFS= read -r magic_gadget; do
+	echo -e "[\e[31m1GADGETARMY\e[0m]: using magic_gadget $magic_gadget"
 	if $remote; then
-		python3 "$script_file" ONE_GADGET="$one_gadget" REMOTE < /dev/tty
+		python3 "$script_file" MAGIC_GADGET="$magic_gadget" REMOTE < /dev/tty
 	else
-		python3 "$script_file" ONE_GADGET="$one_gadget" < /dev/tty
+		python3 "$script_file" MAGIC_GADGET="$magic_gadget" < /dev/tty
 	fi
 	if [[ $counter -lt $nlines ]]; then
-		echo -e -n "[\e[31mLOTTA1GADGETS\e[0m]: script with one_gadget finished, continue with next one? (Y/N) [Y]: "
+		echo -e -n "[\e[31m1GADGETARMY\e[0m]: script with magic_gadget finished, continue with next one? (Y/N) [Y]: "
 		read -n 1 -r char < /dev/tty
 		echo ""
 		if [ "$char" != 'Y' -a "$char" != 'y' -a "$char" != '' ]; then
@@ -109,4 +109,4 @@ while IFS= read -r one_gadget; do
 		fi
 		counter=$counter+1
 	fi
-done <<< "$one_gadgets"
+done <<< "$magic_gadgets"
