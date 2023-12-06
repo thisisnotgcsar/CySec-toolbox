@@ -26,11 +26,11 @@
   - [3.7. `notes/`](#37-notes)
   - [3.8. `configurations/`](#38-configurations)
 - [4. Roadmap](#4-roadmap)
-- [Contributing](#contributing)
-  - [How to contribute to THIS repo?](#how-to-contribute-to-this-repo)
-  - [I have an idea for a new tool, can we collaborate?](#i-have-an-idea-for-a-new-tool-can-we-collaborate)
-- [Meta](#meta)
-- [Acknowledgments](#acknowledgments)
+- [5. Contributing](#5-contributing)
+  - [5.1. How to contribute to THIS repo?](#51-how-to-contribute-to-this-repo)
+  - [5.2. I have an idea for a new tool, can we collaborate?](#52-i-have-an-idea-for-a-new-tool-can-we-collaborate)
+- [6. Meta](#6-meta)
+- [7. Acknowledgments](#7-acknowledgments)
 
 
 
@@ -165,24 +165,24 @@ I won't dwell my self on this part cause its very subjective to me but if you're
 
 See the [open issues](https://github.com/isthissuperuser/CySec-toolbox/issues) for a full list of proposed features (and known issues).
 
-# Contributing
+# 5. Contributing
 Contributions are more than welcome! Here's a [short video tutorial](https://www.youtube.com/watch?v=8lGpZkjnkt4) on how to open a pull request.
 
-## How to contribute to THIS repo?
+## 5.1. How to contribute to THIS repo?
 Finding bugs, testing, enhancing code or just helping with documentation is appreciated. <br>
 Don't hesitate to contact me even just for questions or suggestions.
 
-## I have an idea for a new tool, can we collaborate?
+## 5.2. I have an idea for a new tool, can we collaborate?
 Yes! If you want we can create together a universal CTF toolbox repo with the useful tools of everyone.
 
-# Meta
+# 6. Meta
 superuser
 
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/isthissuperuser/ODC_23-24-CTFs#what-is-a-ctf">ODC_23-24-CTFs</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/isthissuperuser">superuser</a> is licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p>
 
 https://github.com/isthissuperuser
 
-# Acknowledgments
+# 7. Acknowledgments
  - [pwntools](https://github.com/Gallopsled/pwntools/tree/dev)
  - [ROPgadget](https://github.com/JonathanSalwan/ROPgadget)
  - [one_gadget](https://github.com/david942j/one_gadget)
