@@ -3,9 +3,7 @@
 # illtrace
 # search in an executable file a call for ptrace and NOPs it
 # it is assumed there is only one call to it, subsequent ones won't be found
-#
 # it can also NOP a particular bytes signature provided by input
-# superuser
 
 
 display_help() {
