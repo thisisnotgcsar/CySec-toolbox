@@ -1,4 +1,5 @@
 #!/bin/bash
+#
 # creates in current working directory a template python file for pwning named "script.py"
 # the generated script file is already set with the parameters passed in input
 
