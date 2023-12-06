@@ -29,8 +29,8 @@
 - [5. Contributing](#5-contributing)
   - [5.1. How to contribute to THIS repo?](#51-how-to-contribute-to-this-repo)
   - [5.2. I have an idea for a new tool, can we collaborate?](#52-i-have-an-idea-for-a-new-tool-can-we-collaborate)
-- [6. Meta](#6-meta)
-- [7. Acknowledgments](#7-acknowledgments)
+- [6. Acknowledgments](#6-acknowledgments)
+- [7. Meta](#7-meta)
 
 
 
@@ -46,7 +46,7 @@ These tools were developed during the POLIMI ODC 23-24 course for comfort, ease 
 # 2. Installation
 The majority of these tools are command-line scripts, requiring only BASH or Python for execution. Each script includes a help message accessible via the `-h` command line option, and a brief description of each tool is provided below.
 
-> **Note**: It is essential to thoroughly comprehend the functionality of any script you intend to utilize. <br>
+> ❗️ **Note**: It is essential to thoroughly comprehend the functionality of any script you intend to utilize. <br>
 > Tools vary, and their behavior may be unpredictable. <br>
 > Always refer to the commented source code for comprehensive understanding. <br>
 
@@ -77,10 +77,10 @@ This directory comprises a compilation of useful shellcodes, each possessing uni
 ```
 > ⚠️ This tool depends and it is built on top of `pwntools`. You can view and install `pwntools` [here](https://github.com/Gallopsled/pwntools/tree/dev).
 
-One of the most important tools for automating CTFs as it automatically generates you a `script.py` template directly in your working directory. You can pass as command line parameters the IP, PORT and local executable file in order to find them again already set inside the template. There are 2 types of templates: `/genscript/pwn_script.py` for binary exploitation and `/genscript/web_script.py` for web app exploitation.
+One of the most important tools for automating CTFs as it automatically generates you a `script.py` template directly in your working directory. You can pass as command line parameters the IP, PORT and local EXECUTABLE file in order to find them again already set inside the template. There are 2 types of templates: `/genscript/pwn_script.py` for binary exploitation and `/genscript/web_script.py` for web app exploitation.
 
 ## 3.3. `illtrace`
-> *"A cold, emotionless hitman machine. What is this "Terminator"??"*
+> *"A cold, emotionless hitman machine. What is this "Terminator??"*
 ```
 # search in an executable file a call for ptrace and NOPs it
 # it can also NOP a particular bytes signature provided by input
@@ -107,9 +107,6 @@ If the dynamic search yields no results, you can explicitly provide the bytecode
 > ⚠️ This tool depends and it is built on top of `ROPgadget`. You can view and install `ROPgadget` [here](https://github.com/JonathanSalwan/ROPgadget).
 
 `gadget_finder` serves as an automation tool for `ROPgadget`, streamlining the process by running the `ROPgadget` tool and applying specific filters to its output. These filters are the ones common to search for in a temptative of [ROP](https://en.wikipedia.org/wiki/Return-oriented_programming) attack scenario.
-
-
-**fuckmyhex**: a cool guy. You don't wanna mess with him cause he speak 2 languages: binary and hex! And can do some very interesting manipulations with them...
 
 ## 3.5. `1gadgetsarmy`
 > *"You know what's better than one magic gadget? LOTS of magic gadgets!"*
@@ -175,17 +172,17 @@ Don't hesitate to contact me even just for questions or suggestions.
 ## 5.2. I have an idea for a new tool, can we collaborate?
 Yes! If you want we can create together a universal CTF toolbox repo with the useful tools of everyone.
 
-# 6. Meta
-superuser
-
-<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/isthissuperuser/ODC_23-24-CTFs#what-is-a-ctf">ODC_23-24-CTFs</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/isthissuperuser">superuser</a> is licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p>
-
-https://github.com/isthissuperuser
-
-# 7. Acknowledgments
+# 6. Acknowledgments
  - [pwntools](https://github.com/Gallopsled/pwntools/tree/dev)
  - [ROPgadget](https://github.com/JonathanSalwan/ROPgadget)
  - [one_gadget](https://github.com/david942j/one_gadget)
  - [patchelf](https://github.com/NixOS/patchelf)
 
 *Contributors will get added to the list*
+
+# 7. Meta
+superuser
+
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/isthissuperuser/ODC_23-24-CTFs#what-is-a-ctf">ODC_23-24-CTFs</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/isthissuperuser">superuser</a> is licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p>
+
+https://github.com/isthissuperuser
