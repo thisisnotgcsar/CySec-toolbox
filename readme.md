@@ -11,16 +11,17 @@
 > CySec Toolbox is a collection of cybersecuirty tools for CTF automation
 
 
-- [About](#about)
-- [Installation](#installation)
-  - [Dependencies](#dependencies)
-- [The tools and directory structure](#the-tools-and-directory-structure)
-  - [genbin](#genbin)
-    - [shellcodes](#shellcodes)
+- [1. About](#1-about)
+- [2. Installation](#2-installation)
+  - [2.1. Dependencies](#21-dependencies)
+- [3. The tools and directory structure](#3-the-tools-and-directory-structure)
+  - [3.1. `genbin`](#31-genbin)
+    - [3.1.1. `shellcodes/`](#311-shellcodes)
+  - [3.2. `/genscript/genscript`](#32-genscriptgenscript)
 
 
 
-# About
+# 1. About
 These tools were developed during the POLIMI ODC 23-24 course for comfort, ease of use, and, most importantly, because it was fun. While initially designed for use in CTFs, there's nothing preventing you from incorporating them into your daily operations as well.
 
 <p align="center">
@@ -29,7 +30,7 @@ These tools were developed during the POLIMI ODC 23-24 course for comfort, ease 
   <em>superuser and his toolbox</em>
 </p>
 
-# Installation
+# 2. Installation
 The majority of these tools are command-line scripts, requiring only BASH or Python for execution. Each script includes a help message accessible via the `-h` command line option, and a brief description of each tool is provided below.
 
 > **Note**: It is essential to thoroughly comprehend the functionality of any script you intend to utilize. <br>
@@ -37,20 +38,27 @@ The majority of these tools are command-line scripts, requiring only BASH or Pyt
 > Always refer to the commented source code for comprehensive understanding. <br>
 
 
-## Dependencies 
+## 2.1. Dependencies 
 Certain tools are built upon others to facilitate interaction and encourage automation. It's crucial to grasp the functionality of a script before execution. A comprehensive list of dependencies is available in `/configurations/installed.txt`. Familiarizing yourself with this list will help ensure the seamless operation of the tools.
 
-# The tools and directory structure
+# 3. The tools and directory structure
 
-## genbin
+## 3.1. `genbin`
 ```
 # writes to stdout the hex bytecodes of an assmebled assembly file given from stdin with 64 bit architecture
 # if no file is provided, stdin is read
 ```
 This script is tailored for shellcode CTFs, where crafting a specific shellcode and assembling it accurately is often required for a functional payload. While many individuals resort to web assemblers such as [defuse.ca](https://defuse.ca/online-x86-assembler.htm), I personally found them cumbersome due to the copy-pasting hurdle. `genbin` directly addresses this challenge by allowing you to write your assembly code in a file. It takes care of the assembly process and provides you with the hex bytecodes on stdout. This approach proves advantageous, as you can seamlessly call it from your script.py without relying on an internet connection. Moreover, it enhances code readability by eliminating the need for long hex strings, which may be unclear until de-assembled.
 
-### shellcodes
-This directory contains some useful shellcodes I wrote, each one with niche properties that make each of them special. `genbin` usually phishes from this directory the shellcodes so in most cases you will not have to write **any line of assembly**!
+### 3.1.1. `shellcodes/`
+This directory comprises a compilation of useful shellcodes, each possessing unique properties that set them apart. By utilizing the `genbin` tool, you can easily extract code snippets from this directory, eliminating the need to **write any assembly code** in most cases.
+
+## 3.2. `/genscript/genscript`
+```
+# creates in current working directory a template python file for pwning named "script.py"
+# the generated script file is already set with the parameters passed in input
+```
+One of the most important tools for automating CTFs as it automatically generates you a `script.py` template directly in your working directory. You can pass as command line parameters the IP, PORT and local executable file in order to find them again already set inside the template. There are 2 types of templates: `/genscript/pwn_script.py` for binary exploitation and `/genscript/web_script.py` for web app exploitation.
 
 
 **genbin**: you will just need to give him some assembly instructions and he will generate you an optimized version of machine code!
