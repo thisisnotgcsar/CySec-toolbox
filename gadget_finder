@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash file for gadgets finding optimization
+# script for gadgets finding optimization
 # it runs ROPgadget and puts the output to gadgets file
 # it then parses gadgets with different awk filters and prints the outputs to stdout
 # current filters are:
