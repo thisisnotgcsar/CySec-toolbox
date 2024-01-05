@@ -139,6 +139,23 @@ Sometimes you are given a libc version wich is unknown or that has been opportun
 ### 3.6.1. `libc_analyzer/check_tcache.c`
 This particular C file tries to understand if the `libc` used by it has `T-Cache` implementation and how it behaves.
 
+## 3.6. `patcher/patcher.py`
+> *"Surgeon on its work.. patching codes"*
+```
+# Script that patches a binary file provided.
+# It does provide NOP and ZERO out-of-the-box patches but it's possible
+# to also inject via file your custum one.
+```
+
+Substitutres code in certain precise points. It provides already premade patches:
+ - NOP: Substitutes every byte from OFFSET with the `NOP` opcode (`0x90`). It requires the bytes LENGTH of how much you want to patch.
+ - ZERO: Substitutes every byte from OFFSET with the `NULL` byte (`0x00`). It requires the bytes LENGTH of how much you want to patch.
+ - It's possible to provide in input also a custum binary file that will be used to overwrite from OFFSET.
+The tool also does boundaries chekcing on the OFFSET and LENGTH provided in input.
+
+### 3.6.1. `patcher/patcher`
+Simple shell script used for calling the python script. It passes all its command line arguments to the script.
+
 ## 3.7. `notes/`
 Just a collection of slides and useful material to review during exploitation.
 
