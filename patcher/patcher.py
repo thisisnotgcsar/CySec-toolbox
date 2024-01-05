@@ -1,6 +1,11 @@
 import argparse
 import os
 
+# Script that patches a binary file provided.
+# It does provide NOP and ZERO out-of-the-box patches but it's possible
+# to also inject via file your custum one.
+# superuser
+
 # Function to convert a string in a number
 # Works with decimal base and hex base numbers
 def check_number(data):
