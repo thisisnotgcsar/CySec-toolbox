@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# bash utility script for calling the patcher script
+# it forwards all its args to the script
+# it searches the python script inside the original directory of this script
+
+python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/patcher.py" "$@"
