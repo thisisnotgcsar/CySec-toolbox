@@ -9,7 +9,7 @@ url = "url$1"
 def find_flag(data):
 	search = re.search("flag{[a-zA-Z1-9_!]+}", data)
 	if search:
-		print(search.group())
+		return search.group()
 	  
 
 def gen_ran_string(size=15):
