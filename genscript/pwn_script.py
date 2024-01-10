@@ -64,7 +64,7 @@ if args["MAGIC_GADGET"]:
 if args["REMOTE"]:
 	r = remote("url$1", port$2)
 elif args["GDB"]:
-	r = gdb.attach("./exe$3", f"""
+	r = gdb.debug("./exe$3", f"""
 		# b *{b_main}
 		unset env
 		set disable-randomization off
