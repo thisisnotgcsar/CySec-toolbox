@@ -40,7 +40,7 @@ These tools were developed during the POLIMI ODC 23-24 course for comfort, ease 
 <p align="center">
   <img src="https://i.ibb.co/5FqSq8Y/image.png" alt="Your Image Alt Text" width="200">
   <br>
-  <em>superuser and his toolbox</em>
+  <em>csarg and his toolbox</em>
 </p>
 
 # 2. Installation
