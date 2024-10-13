@@ -40,7 +40,7 @@ These tools were developed during the POLIMI ODC 23-24 course for comfort, ease 
 <p align="center">
   <img src="https://i.ibb.co/5FqSq8Y/image.png" alt="Your Image Alt Text" width="200">
   <br>
-  <em>csarg and his toolbox</em>
+  <em>gcsar and his toolbox</em>
 </p>
 
 # 2. Installation
@@ -177,7 +177,7 @@ I won't dwell my self on this part cause its very subjective to me but if you're
 - [ ] Remove `ptrace` signature search for illtrace or improve it
 - [ ] Improving `notes/` material and adding more files
 
-See the [open issues](https://github.com/thisisnotcsarg/CySec-toolbox/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/thisisnotgcsar/CySec-toolbox/issues) for a full list of proposed features (and known issues).
 
 # 5. Contributing
 Contributions are more than welcome! Here's a [short video tutorial](https://www.youtube.com/watch?v=8lGpZkjnkt4) on how to open a pull request.
@@ -198,8 +198,8 @@ Yes! If you want we can create together a universal CTF toolbox repo with the us
 *Contributors will get added to the list*
 
 # 7. Meta
-csarg
+gcsar
 
-<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/thisisnotcsarg/CySec-toolbox">CySec-toolbox</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/thisisnotcsarg">csarg</a> is licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p>
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/thisisnotgcsar/CySec-toolbox">CySec-toolbox</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/thisisnotgcsar">gcsar</a> is licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p>
 
-https://github.com/thisisnotcsarg
+https://github.com/thisisnotgcsar
